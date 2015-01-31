@@ -1,0 +1,42 @@
+// Unitless calculations; Turn numbers with units into unitless numbers: https://github.com/nex3/sass/issues/533
+@function strip-units($px-values) {
+// Add condition for 0
+  @if $px-values == 0 {
+  @return 0;
+    } @else {
+  @return $px-values / ($px-values * 0 + 1);
+ }
+}
+
+//Set units for the calculation
+$base-font-size: 16px;
+
+@mixin remeth($property, $px-values) {
+  // Print the first line in pixel values
+  #{$property}: $px-values;
+  // If there is only one (numeric) value, return the property/value line for it.
+  //Strip units to handle zero pairings, eg. 'margin: 10, 0' and unpaired values
+  @if type-of($px-values) == "number" {
+      $unitless: strip-units($px-values);
+      $base-font-size-unitless: strip-units($base-font-size);
+      // The test for 0 that won't return false
+    @if $unitless == 0 {
+          #{$property}: $unitless;
+     }  @else {
+      // Convert the baseline and return to rems for single values
+      #{$property}: ( $unitless / $base-font-size-unitless) *1rem;
+    }
+  }
+  @else {
+    $rem-values: ();
+    @each $value in $px-values {
+      @if $value == 0 or type-of($value) == "string" or type-of($value) == "color" {
+        $rem-values: append($rem-values, $value);
+      } @else {
+      // Convert the baseline and return to rems. 
+        $rem-values: append($rem-values, ($value / $base-font-size ) *1rem);
+      }
+    }
+    #{$property}: $rem-values;
+  }
+}
