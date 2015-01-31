@@ -8,19 +8,20 @@ remeth() is a Sass mixin that converts pixel values to rem values for whatever p
 
 Eg:
 
-```.container {
-  @include remeth('padding', 20px 0);
-  @include remeth('min-height', 40px);
-}
-```
+    .container {
+      @include remeth('padding', 20px 0);
+      @include remeth('min-height', 40px);
+    }
+
+
 Compiles to:
 
-```.container {
-  padding: 20px 0;
-  padding: 1.25rem 0;
-  min-height: 40px;
-  min-height: 2.5rem;
-}
-```
+    .container {
+      padding: 20px 0;
+      padding: 1.25rem 0;
+      min-height: 40px;
+      min-height: 2.5rem;
+    }
+
 
 This is a carry-forward fork from https://github.com/bitmanic/rem. It is distinct from the previous in that it strips units before logic tests to mitigate Sass errors and warnings. The mixin named 'rem' was also yielding errors in one Sass environment I was working in, so decided to make it more unique. 
